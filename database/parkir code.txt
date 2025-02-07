@@ -1,0 +1,207 @@
+kendaraan 
+
+
+<?php
+
+$conn = mysqli_connect('localhost','root','','db_parkir_habib');
+if(!$conn){
+    
+    die("Koneksi Gagal".mysqli_connect_error());
+}
+
+
+index
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Siswa Baru</title>
+</head>
+<body>
+    <h1>Data parkir baru Baru</h1>
+    <a href="tambah.php">tambahan parkir</a>
+    <table border="1">
+        <tr>
+            <th>No.</th>
+            <th>id kendaraan</th>
+            <th>nomor plat</th>
+            <th>id parkir</th>
+            <th>jenis kendaraan</th>
+            <th>Aksi</th>
+        </tr>
+        <?php
+        include '../../config/koneksi.php';
+        $query = mysqli_query($conn, "SELECT * FROM kendaraan");
+        $no=1;
+        if(mysqli_num_rows($query)){
+            echo "Data ada";
+            while($result=mysqli_fetch_assoc($query)){
+             ?>                   
+        <tr>
+            <td><?php echo $no ?></td>
+            <td><?php echo $result['id_kendaraan'] ?></td>
+            <td><?php echo $result['no_plat'] ?></td>
+            <td><?php echo $result['id_parkir'] ?></td>
+            <td><?php echo $result['jenis_kendaraan'] ?></td>
+            <td>
+                <a href="">Edit |</a>
+                <a href="">Hapus</a>
+            </td>
+        </tr>
+    <?php
+    $no++;
+    }
+} else{
+    echo "Data Kosong";
+}
+    ?>
+    </table>
+</body>
+</html>
+
+
+
+
+
+
+tambah
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempat parkir</title>
+</head>
+<body>
+    <h1>Tambah Kelas Baru</h1>
+    <form action = "simpan.php"method="POST">
+        <label for="">id kendaraan</label>
+        <input type="number" name="id_kendaraan">
+        <br>
+        <label for="">no plat</label>
+        <input type="text" name="no_plat">
+        <br>
+        <label for="">id parkir</label>
+        <input type="text" name="id_parkir">
+        <br>
+        <label for="">jenis kendaraan</label>
+        <input type="text" name="jenis_kendaraan">
+        <br>
+        <button type="submit">tambahkan</button>
+ </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+parkir
+
+index
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Siswa Baru</title>
+</head>
+<body>
+    <h1>Data Siswa Baru</h1>
+    <table border="1">
+        <tr>
+            <th>No.</th>
+            <th>id parkir</th>
+            <th>tanggal parkir</th>
+            <th>harga parkir</th>
+            <th>alamat parkir</th>
+            <th>Aksi</th>
+        </tr>
+        <?php
+        include '../../config/koneksi.php';
+        $query = mysqli_query($conn, "SELECT * FROM parkir");
+        $no=1;
+        if(mysqli_num_rows($query)){
+            echo "Data ada";
+            while($result=mysqli_fetch_assoc($query)){
+             ?>                   
+        <tr>
+            <td><?php echo $no ?></td>
+            <td><?php echo $result['id_parkir'] ?></td>
+            <td><?php echo $result['tanggal_parkir'] ?></td>
+            <td><?php echo $result['harga_parkir'] ?></td>
+            <td><?php echo $result['alamat_parkir'] ?></td>
+            <td>
+                <a href="">Edit |</a>
+                <a href="">Hapus</a>
+            </td>
+        </tr>
+    <?php
+    $no++;
+    }
+} else{
+    echo "Data Kosong";
+}
+    ?>
+    </table>
+</body>
+</html>
+
+
+simpan
+
+view/kendaraan/simpan.ph<?php
+$id_parkir = $_POST['id_parkir'];
+$tanggal_parkir = $_POST['tanggal_parkir'];
+$harga_parkir = $_POST['harga_parkir'];
+$alamat_parkir = $_POST['alamat_parkir'];
+
+include '../../config/koneksi.php';
+
+$query = mysqli_query($conn,"INSERT INTO parkir
+VALUES('$id_parkir','$tanggal_parkir','$harga_parkir','$alamat_parkir')");
+if($squery){
+    echo "<script>alert('tambah berhasil')</script>";
+    echo "<script>window.location.href='index.php'</script>";
+}else{
+    echo "<script>alert('Tambah gagal')</script>";
+    echo "<script>window.location.href='tambah.php'</script>";
+}
+
+
+tambah
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempat parkir</title>
+</head>
+<body>
+    <h1>Tambah list baru</h1>
+    <form action = "simpan.php"method="POST">
+        <label for="">id parkir</label>
+        <input type="number" name="id_parkir">
+        <br>
+        <label for="">tanggal parkir</label>
+        <input type="text" name="tanggal_parkir">
+        <br>
+        <label for="">harga parkir</label>
+        <input type="text" name="harga_parkir">
+        <br>
+        <label for="">alamat parkir</label>
+        <input type="text" name="alamat_parkir">
+        <br>
+        <button type="submit">tambahkan</button>
+ </form>
+</body>
+</html>
